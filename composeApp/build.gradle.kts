@@ -25,6 +25,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation("com.fazecast:jSerialComm:2.11.0")
         }
     }
 }
@@ -36,7 +37,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.openswim"
+            packageName = "OpenSwim"
             packageVersion = "1.0.0"
         }
     }
