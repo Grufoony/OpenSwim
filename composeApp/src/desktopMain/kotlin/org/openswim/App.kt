@@ -28,7 +28,7 @@ fun App() {
             Button(onClick = {
                 showContent = !showContent
                 if (showContent) {
-                    println("Button clicked, fetching ports...")
+                    println("Button clicked, searching for serial ports...")
                     ports = SerialPort.getCommPorts()
                     if (ports.isEmpty()) {
                         println("No ports found.")
