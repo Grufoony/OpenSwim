@@ -1,3 +1,5 @@
+# OpenSwim
+
 This is a Kotlin Multiplatform project targeting Desktop.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
@@ -9,3 +11,11 @@ This is a Kotlin Multiplatform project targeting Desktop.
 
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+## Installation
+
+### Windows
+To generate a Windows installer:
+```batch
+./gradlew.bat packageMsi
+```
