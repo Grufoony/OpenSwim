@@ -25,7 +25,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation("com.fazecast:jSerialComm:2.11.0")
+            implementation("com.fazecast:jSerialComm:${property("jserialcommVersion")}")
         }
     }
 }
@@ -39,6 +39,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "OpenSwim"
             packageVersion = "1.0.0"
+            licenseFile.set(project.file("../LICENSE"))
         }
     }
 }

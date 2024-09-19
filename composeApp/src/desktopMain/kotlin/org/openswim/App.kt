@@ -10,9 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import com.fazecast.jSerialComm.*
+import com.fazecast.jSerialComm.SerialPort
 
 import openswim.composeapp.generated.resources.Res
 import openswim.composeapp.generated.resources.compose_multiplatform
@@ -22,31 +23,32 @@ import openswim.composeapp.generated.resources.compose_multiplatform
 fun App() {
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
         var ports by remember { mutableStateOf(emptyArray<SerialPort>()) }
 
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {
-                showContent = !showContent
-                if (showContent) {
-                    println("Button clicked, searching for serial ports...")
+        // Start a coroutine to fetch ports
+        LaunchedEffect(Unit) {
+            coroutineScope.launch {
+                while (true) {
                     ports = SerialPort.getCommPorts()
-                    if (ports.isEmpty()) {
-                        println("No ports found.")
-                    } else {
-                        ports.forEach { port ->
-                            println("Ports fetched: ${port.systemPortName}")
-                        }
-                    }
+                    delay(500) // Fetch every 0.5 seconds
                 }
-            }) {
-                Text("Fetch ports")
+            }
+        }
+
+        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Button(onClick = { showContent = !showContent }) {
+                Text("Show ports")
             }
             AnimatedVisibility(showContent) {
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    // Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Available Serial Ports:")
-                    ports.forEach { port ->
-                        Text(port.getSystemPortName())
+                    if (ports.isEmpty()) {
+                        Text("No ports found.")
+                    } else {
+                        ports.forEach { port ->
+                            Text("Name: ${port.getSystemPortName()}, Baud Rate: ${port.getBaudRate()}, Description: ${port.getPortDescription()}")
+                        }
                     }
                 }
             }
