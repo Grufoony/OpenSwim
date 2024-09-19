@@ -39,6 +39,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "OpenSwim"
             packageVersion = "1.0.0"
+            licenseFile.set(project.file("../LICENSE"))
         }
     }
 }
