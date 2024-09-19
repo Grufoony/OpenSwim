@@ -27,7 +27,9 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            // Serial Communication - jSerialComm
             implementation("com.fazecast:jSerialComm:$jserialcommVersion")
+            // Database - Exposed
             implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
             implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
             implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
