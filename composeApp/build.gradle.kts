@@ -25,7 +25,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation("com.fazecast:jSerialComm:2.11.0")
+            implementation("com.fazecast:jSerialComm:${property("jserialcommVersion")}")
         }
     }
 }
