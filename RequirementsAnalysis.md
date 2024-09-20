@@ -1,5 +1,11 @@
 # Project requirements
 
+## Competition
+This info will be print on the results PDF
+- [ ] Date (a day or an interval of days)
+- [ ] Location (Swimming Pool Name, address, number of lanes)
+- [ ] Other information (Organizing Committee, Type of chrono, other comments)
+
 ## Database
 The database must contain info about:
 - [ ] Athletes (name, surname, year of birth, sex, team) + category (automatically determined by year/sex combination)
@@ -20,3 +26,4 @@ The database must contain info about:
 ## Others
 - [ ] Make a rank of the races
 - [ ] Assign custom points to athletes in races
+- [ ] Ability to accumulate times in a *Combined* event. Which means every athlete should compete in all four styles for a given distance, the final rank will simply be the sum of the four times.
