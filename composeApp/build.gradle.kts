@@ -28,7 +28,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             // Serial Communication - jSerialComm
-            implementation("com.fazecast:jSerialComm:$jserialcommVersion")
+            implementation(libs.jSerialComm)
             // Database - Exposed
             implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
             implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
