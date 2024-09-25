@@ -17,8 +17,6 @@ import com.fazecast.jSerialComm.SerialPort
 
 import openswim.composeapp.generated.resources.*
 
-// import openswim.composeapp.generated.resources.Res
-
 @Composable
 @Preview
 fun App() {
