@@ -7,10 +7,12 @@ plugins {
 }
 
 kotlin {
-    jvm("desktop")
+    jvm {
+        withJava()
+    }
+    jvmToolchain(21)
     
     sourceSets {
-        val desktopMain by getting
         
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -21,8 +23,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-        }
-        desktopMain.dependencies {
+
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation("com.fazecast:jSerialComm:${property("jserialcommVersion")}")
@@ -38,8 +39,14 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "OpenSwim"
-            packageVersion = "1.0.0"
+            packageVersion = property("version")?.toString()
             licenseFile.set(project.file("../LICENSE"))
         }
+    }
+}
+
+configurations.all {
+    attributes {
+        attribute(Attribute.of("ui", String::class.java), "awt")
     }
 }
