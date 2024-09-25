@@ -11,7 +11,6 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        val jserialcommVersion: String by project
         val exposedVersion: String by project
         
         commonMain.dependencies {
