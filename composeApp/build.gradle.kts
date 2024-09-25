@@ -30,6 +30,7 @@ kotlin {
             // Database - Exposed
             implementation(libs.exposed.core)
             implementation(libs.exposed.jdbc)
+            implementation(libs.h2database)
         }
     }
 }

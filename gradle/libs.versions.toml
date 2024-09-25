@@ -6,6 +6,7 @@ kotlin = "2.0.20"
 kotlinx-coroutines = "1.8.1"
 jSerialComm = "2.11.0"
 exposed = "0.54.0"
+h2database = "2.2.224"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -17,6 +18,7 @@ kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-co
 jSerialComm = { module = "com.fazecast:jSerialComm", version.ref = "jSerialComm" }
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+h2database = { group = "com.h2database", name = "h2", version.ref = "h2database" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
