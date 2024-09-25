@@ -11,12 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.*
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import com.fazecast.jSerialComm.SerialPort
 
-import openswim.composeapp.generated.resources.Res
-import openswim.composeapp.generated.resources.compose_multiplatform
+import openswim.composeapp.generated.resources.*
+
+// import openswim.composeapp.generated.resources.Res
 
 @Composable
 @Preview
@@ -44,7 +45,7 @@ fun App() {
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("Available Serial Ports:")
                     if (ports.isEmpty()) {
-                        Text("No ports found.")
+                        Text(stringResource(Res.string.no_ports))
                     } else {
                         ports.forEach { port ->
                             Text("Name: ${port.getSystemPortName()}, Baud Rate: ${port.getBaudRate()}, Description: ${port.getPortDescription()}")
