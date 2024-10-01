@@ -38,7 +38,9 @@ class TylerConfigurator : TylerConfiguratorBase(), Configurator {
             val appDataPath = System.getenv("APPDATA")
             Paths.get(appDataPath, "OpenSwim", "logs", "${timestamp}.log").toString()
         } else {
-            "${timestamp}.log"
+            val homePath = System.getProperty("user.home")
+            val openSwimPath = Paths.get(homePath, ".local", "openswim", "logs")
+            Paths.get(openSwimPath.toString(), "${timestamp}.log").toString()
         }
         appenderFILE.file = logFilePath
         appenderFILE.setAppend(true);
