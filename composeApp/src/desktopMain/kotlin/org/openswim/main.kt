@@ -3,17 +3,17 @@ package org.openswim
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
-import org.apache.logging.log4j.kotlin.logger
+import io.github.oshai.kotlinlogging.KotlinLogging
+private val LoggerSingleton = KotlinLogging.logger{}
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "OpenSwim",
     ) {
-        val klogger = logger()
-
-        klogger.warn{"Warning eheh"}
+        LoggerSingleton.info{"Before app"}
         App()
-        klogger.info{"Info eheh"}
+        LoggerSingleton.info{"After app"}
+        LoggerSingleton.debug{"Debug test"}
     }
 }

@@ -17,6 +17,9 @@ import com.fazecast.jSerialComm.SerialPort
 
 import openswim.composeapp.generated.resources.*
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+private val LoggerSingleton = KotlinLogging.logger{}
+
 @Composable
 @Preview
 fun App() {
@@ -39,6 +42,7 @@ fun App() {
             Button(onClick = { showContent = !showContent }) {
                 Text("Show ports")
             }
+            LoggerSingleton.info{"Show port button pressed."}
             AnimatedVisibility(showContent) {
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("Available Serial Ports:")

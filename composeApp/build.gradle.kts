@@ -31,9 +31,8 @@ kotlin {
             implementation(libs.exposed.core)
             implementation(libs.exposed.jdbc)
             // Logger
-            implementation(libs.log4j.api)
-            implementation(libs.log4j.slf4j)
-            implementation(libs.log4j.provider)
+            implementation(libs.klogging)
+            implementation(libs.logback)
         }
     }
 }
