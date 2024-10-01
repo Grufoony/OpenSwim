@@ -46,7 +46,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "OpenSwim"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.1"
             licenseFile.set(project.file("../LICENSE"))
         }
     }
