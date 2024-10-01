@@ -25,6 +25,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.kotlinx.datetime)
             // Serial Communication - jSerialComm
             implementation(libs.jSerialComm)
             // Database - Exposed
