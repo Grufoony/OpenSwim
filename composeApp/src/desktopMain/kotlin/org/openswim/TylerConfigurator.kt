@@ -1,5 +1,8 @@
 package org.openswim
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
@@ -8,6 +11,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.tyler.TylerConfiguratorBase
 import ch.qos.logback.core.Appender
 import ch.qos.logback.core.FileAppender
+import java.nio.file.Paths
 
 class TylerConfigurator : TylerConfiguratorBase(), Configurator {
     /**
@@ -28,14 +32,22 @@ class TylerConfigurator : TylerConfiguratorBase(), Configurator {
         val appenderFILE = FileAppender<ILoggingEvent>()
         appenderFILE.setContext(context);
         appenderFILE.setName("FILE");
-        appenderFILE.setFile("testFile.log");
+        val timestamp = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+            .toString().replace(":", "").replace("-", "").replace(".", "").replace("T", "-").substring(0, 15)
+        val logFilePath = if (System.getProperty("os.name").lowercase().contains("win")) {
+            val appDataPath = System.getenv("APPDATA")
+            Paths.get(appDataPath, "OpenSwim", "logs", "${timestamp}.log").toString()
+        } else {
+            "${timestamp}.log"
+        }
+        appenderFILE.file = logFilePath
         appenderFILE.setAppend(true);
         appenderFILE.setImmediateFlush(true);
 
         // Configure component of type PatternLayoutEncoder
         val patternLayoutEncoder = PatternLayoutEncoder();
         patternLayoutEncoder.setContext(context);
-        patternLayoutEncoder.setPattern("%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level -%logger -%kvp- %msg%n");
+        patternLayoutEncoder.setPattern("%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level -%logger [%file:%line] -%kvp- %msg%n");
         patternLayoutEncoder.setParent(appenderFILE);
         patternLayoutEncoder.start();
         // Inject component of type PatternLayoutEncoder into parent
