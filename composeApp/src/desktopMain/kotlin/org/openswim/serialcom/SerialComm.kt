@@ -50,7 +50,7 @@ class SerialComm(
         }
 
         val strResponse = responseBuilder.toString()
-        LoggerSingleton.debug { "Received message: ${strResponse}" }
+        LoggerSingleton.debug { "Received message: $strResponse" }
         return strResponse
     }
 
