@@ -31,7 +31,7 @@ kotlin {
             implementation(libs.exposed.core)
             implementation(libs.exposed.jdbc)
             implementation(libs.exposed.javatime)
-            implementation(libs.h2database)
+            implementation(libs.exposed.dao)
         }
     }
 }
