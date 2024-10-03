@@ -24,7 +24,7 @@ class SerialComm(val port: SerialPort, val iBaudRate: Int = 19200, val iNDataBit
             throw e
         }
     }
-    fun receiveString(strEndCommand: String? = null) : String {
+    fun receiveString(strEndCommand: String) : String {
         val buffer = ByteArray(1024)
         val responseBuilder = StringBuilder()
         var numRead: Int
@@ -35,7 +35,7 @@ class SerialComm(val port: SerialPort, val iBaudRate: Int = 19200, val iNDataBit
                 if (numRead > 0) {
                     responseBuilder.append(String(buffer, 0, numRead))
                 }
-            } while (strEndCommand != null && !responseBuilder.endsWith(strEndCommand))
+            } while (!responseBuilder.endsWith(strEndCommand))
         } catch (e: Exception) {
             LoggerSingleton.error("Failed to receive data: ${e.message}")
             throw e
