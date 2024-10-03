@@ -28,7 +28,7 @@ class SerialComm(
         try {
             port.writeBytes(bCommand, bCommand.size)
         } catch (e: Exception) {
-            LoggerSingleton.error("Failed to send data: ${e.message}")
+            LoggerSingleton.error{ "Failed to send data: ${e.message}" }
             throw e
         }
     }
