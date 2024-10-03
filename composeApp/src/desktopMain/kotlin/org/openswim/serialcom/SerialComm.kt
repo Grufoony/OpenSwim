@@ -1,7 +1,7 @@
 package org.openswim
 
+import kotlinx.coroutines.*
 import com.fazecast.jSerialComm.SerialPort
-
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val LoggerSingleton = KotlinLogging.logger {}
@@ -23,7 +23,7 @@ class SerialComm(
         val fullCmdBuilder = StringBuilder()
         fullCmdBuilder.append(strData).append(strEndCommand)
         var strFullCommand = fullCmdBuilder.toString()
-        LoggerSingleton.debug { "Sending message ${strFullCommand}" }
+        LoggerSingleton.debug { "Sending message ${strData}" }
         val bCommand = strFullCommand.toByteArray()
         try {
             port.writeBytes(bCommand, bCommand.size)
@@ -32,7 +32,7 @@ class SerialComm(
             throw e
         }
     }
-    fun receiveString(strEndCommand: String) : String {
+    suspend fun receiveString(strEndCommand: String) : String {
         val buffer = ByteArray(1024)
         val responseBuilder = StringBuilder()
         var numRead: Int
@@ -49,9 +49,16 @@ class SerialComm(
             throw e
         }
 
-        val strResponse = responseBuilder.toString()
-        LoggerSingleton.debug { "Received message: $strResponse" }
+        val strResponse = responseBuilder.toString().trim()
+        LoggerSingleton.debug { "Received message: ${strResponse}" }
         return strResponse
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun receiveStringAsync(strEndCommand: String, timeoutMillis: Long = 1500) = GlobalScope.async {
+        withTimeout(timeoutMillis) {
+            receiveString(strEndCommand)
+        }
     }
 
     fun close() {
