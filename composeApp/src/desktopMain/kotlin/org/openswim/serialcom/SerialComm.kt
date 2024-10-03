@@ -55,10 +55,8 @@ class SerialComm(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun receiveStringAsync(strEndCommand: String, timeoutMillis: Long = 1500) = GlobalScope.async {
-        withTimeout(timeoutMillis) {
-            receiveString(strEndCommand)
-        }
+    fun receiveStringAsync(strEndCommand: String) = GlobalScope.async {
+        receiveString(strEndCommand)
     }
 
     fun close() {
