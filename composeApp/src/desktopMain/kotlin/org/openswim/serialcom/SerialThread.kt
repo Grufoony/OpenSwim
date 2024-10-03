@@ -11,7 +11,6 @@ class SerialThread(val serialComm: SerialComm, val chrono: ChronoDefs) {
 
     fun ping(timeoutMillis: Long = 1500) : Boolean {
         serialComm.sendString(chrono.version, chrono.end_cmd)
-        LoggerSingleton.warn{ "Bro I'm here lol" }
         val responseAsync = serialComm.receiveStringAsync(chrono.end_cmd) // Suspend and wait for response
         var lstStrArgs: List<String>
         runBlocking {
