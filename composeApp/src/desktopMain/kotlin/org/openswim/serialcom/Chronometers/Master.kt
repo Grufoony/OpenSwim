@@ -1,7 +1,7 @@
 package org.openswim
 
 class Master : ChronoDefs {
-    override val name = "Digitech Master3"
+    override val name = "Digitech Master"
     override val end_cmd = "\r\n"
     override val version = "+V"
     override val next_msg = "+D"
