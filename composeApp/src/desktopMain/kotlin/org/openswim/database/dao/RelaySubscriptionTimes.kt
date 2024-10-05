@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 
 object RelaySubscriptionTimes : IntIdTable("relay_sub_times") {
     val relaySubscriptionId = reference("relay_sub_id", Relays.id, onDelete = ReferenceOption.CASCADE, onUpdate = ReferenceOption.CASCADE)
-    val athleteId = reference("athlete_id", Athletes.id, onDelete = ReferenceOption.RESTRICT, onUpdate = ReferenceOption.CASCADE)
+    val athleteId = reference("athlete_id", RelayTeamAthletes.athleteId, onDelete = ReferenceOption.RESTRICT, onUpdate = ReferenceOption.CASCADE)
     val time = integer("time")
 }
 
