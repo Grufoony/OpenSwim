@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS athletes
     club_id     INTEGER      NOT NULL,
     category_id INTEGER      NOT NULL,
 
-    FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL ,
-    FOREIGN KEY (club_id) REFERENCES clubs (id) ON DELETE SET NULL
+    FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (club_id) REFERENCES clubs (id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS clubs
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS relays
     category_id   INTEGER      NOT NULL,
     relay_type_id INTEGER      NOT NULL,
 
-    FOREIGN KEY (category_id) REFERENCES categories (id),
-    FOREIGN KEY (relay_type_id) REFERENCES relay_types (id)
+    FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (relay_type_id) REFERENCES relay_types (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS relay_teams
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS relay_team_athletes
     relay_team_id INTEGER NOT NULL,
     athlete_id    INTEGER NOT NULL,
 
-    FOREIGN KEY (relay_team_id) REFERENCES relay_teams (id),
-    FOREIGN KEY (athlete_id) REFERENCES athletes (id),
+    FOREIGN KEY (relay_team_id) REFERENCES relay_teams (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (athlete_id) REFERENCES athletes (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     UNIQUE (relay_team_id, athlete_id) ON CONFLICT ABORT
 );
 
@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS relay_subscriptions
     relay_id      INTEGER NOT NULL,
     total_time    INTEGER DEFAULT 0,
 
-    FOREIGN KEY (relay_team_id) REFERENCES relay_teams (id),
-    FOREIGN KEY (relay_id) REFERENCES relays (id)
+    FOREIGN KEY (relay_team_id) REFERENCES relay_teams (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (relay_id) REFERENCES relays (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- check on athlete_id it should be in relay_team_athletes associated
@@ -112,8 +112,8 @@ CREATE TABLE IF NOT EXISTS relay_sub_times
     athlete_id   INTEGER NOT NULL,
     time         INTEGER NOT NULL,
 
-    FOREIGN KEY (relay_sub_id) REFERENCES relay_subscriptions (id),
-    FOREIGN KEY (athlete_id) REFERENCES relay_team_athletes (athlete_id)
+    FOREIGN KEY (relay_sub_id) REFERENCES relay_subscriptions (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (athlete_id) REFERENCES relay_team_athletes (athlete_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS series

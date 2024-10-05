@@ -6,17 +6,17 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 
-object Subscriptions : IntIdTable("subscriptions") {
+object RaceSubscriptions : IntIdTable("race_subscriptions") {
     val athleteId = reference("athlete_id", Athletes, onDelete = ReferenceOption.CASCADE)
     val raceId = reference("race_id", Competitions, onDelete = ReferenceOption.CASCADE)
     val time = long("time").nullable()
 }
 
-class Subscription(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Subscription>(Subscriptions)
+class RaceSubscription(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<RaceSubscription>(RaceSubscriptions)
 
-    var athlete by Athlete referencedOn Subscriptions.athleteId
+    var athlete by Athlete referencedOn RaceSubscriptions.athleteId
     var race by Race referencedOn Races.categoryId
-    var time by Subscriptions.time
+    var time by RaceSubscriptions.time
 }
 
