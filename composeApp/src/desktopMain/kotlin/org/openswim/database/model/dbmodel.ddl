@@ -263,3 +263,18 @@ BEGIN
            WHERE rta.relay_team_id = new.relay_team_id
            LIMIT 1);
 END;
+
+-- check that the athlete_id has a team_id  relay_team_athletes associated
+-- with the subscription
+CREATE TRIGGER IF NOT EXISTS relay_sub_times_athlete_team_check
+    BEFORE INSERT
+    ON relay_sub_times
+    FOR EACH ROW
+BEGIN
+    SELECT RAISE(ABORT, 'The athlete_id should be in the relay_team_athletes associated with the relay subscription')
+    WHERE (SELECT COUNT(*)
+           FROM relay_team_athletes rta
+                    JOIN relay_subscriptions rs ON rs.relay_team_id = rta.relay_team_id
+           WHERE rta.athlete_id = new.athlete_id
+             AND rs.id = new.relay_sub_id) = 0;
+END;
