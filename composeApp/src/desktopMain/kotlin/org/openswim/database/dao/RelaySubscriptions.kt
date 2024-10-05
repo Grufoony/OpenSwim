@@ -24,4 +24,5 @@ class RelaySubscription(id: EntityID<Int>) : IntEntity(id) {
     var relayTeam by RelayTeam referencedOn RelaySubscriptions.relayTeamId
     var relay by Relay referencedOn RelaySubscriptions.relayId
     var totalTime by RelaySubscriptions.total_time
+    var times by RelaySubscriptionTime via RelaySubscriptionTimes
 }
