@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.ReferenceOption
 object Races : IntIdTable("races") {
     val distance = integer("distance")
     val style = varchar("style", 255)
-    val custom = bool("custom")
     val categoryId = reference("category_id", Categories, onDelete = ReferenceOption.CASCADE)
     val competitionId = reference("competition_id", Competitions, onDelete = ReferenceOption.CASCADE)
 }
@@ -19,7 +18,6 @@ class Race(id: EntityID<Int>) : IntEntity(id) {
 
     var distance by Races.distance
     var style by Races.style
-    var custom by Races.custom
     var category by Category referencedOn Races.categoryId
     var competition by Competition referencedOn Races.competitionId
 
