@@ -16,7 +16,7 @@ class RaceSubscription(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<RaceSubscription>(RaceSubscriptions)
 
     var athlete by Athlete referencedOn RaceSubscriptions.athleteId
-    var race by Race referencedOn Races.categoryId
+    var race by Race referencedOn RaceSubscriptions.raceId
     var time by RaceSubscriptions.time
 }
 
