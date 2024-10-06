@@ -20,6 +20,7 @@ class Race(id: EntityID<Int>) : IntEntity(id) {
     var style by Races.style
     var category by Category referencedOn Races.categoryId
     var competition by Competition referencedOn Races.competitionId
+    val subscriptions by RaceSubscription referrersOn RaceSubscriptions.raceId
 
 }
 
