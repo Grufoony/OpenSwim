@@ -16,5 +16,6 @@ class Serie(id: EntityID<Int>) : IntEntity(id) {
 
     var seriesName by Series.seriesName
     var race by Race referencedOn Series.raceId
+    var athletes by Athlete via SeriesAthletes
 
 }
