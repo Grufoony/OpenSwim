@@ -21,5 +21,6 @@ class Relay(id: EntityID<Int>) : IntEntity(id) {
     var category by Category referencedOn Relays.category_id
     var relayType by RelayType referencedOn Relays.relay_type_id
     var teams by RelayTeam via RelaySubscriptions
+    var subscription by RelaySubscription via RelaySubscriptions
 
 }
