@@ -1,3 +1,5 @@
+PRAGMA journal_mode = WAL;
+
 CREATE TABLE IF NOT EXISTS athletes
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -103,8 +105,6 @@ CREATE TABLE IF NOT EXISTS relay_subscriptions
     FOREIGN KEY (relay_id) REFERENCES relays (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- check on athlete_id it should be in relay_team_athletes associated
--- with the subscription
 CREATE TABLE IF NOT EXISTS relay_sub_times
 (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -206,18 +206,44 @@ CREATE TABLE IF NOT EXISTS addresses
     country VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS trigger_log
+(
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    name    VARCHAR(255) NOT NULL,
+    counter INTEGER      NOT NULL
+);
+INSERT INTO trigger_log (name, counter)
+VALUES ('sub_category_check',   0),
+       ('relay_category_check', 0),
+       ('relay_club_check',     0),
+       ('relay_sub_times_athlete_team_check',
+                                0);
+
+-- CREATE TRIGGER IF NOT EXISTS add_trigger_log
+--     AFTER INSERT
+--     ON sqlite_master
+--     FOR EACH ROW
+--     WHEN new.type = 'trigger'
+-- BEGIN
+--     INSERT INTO trigger_log (name, counter)
+--     VALUES (new.name, 0);
+-- END;
+
 CREATE TRIGGER IF NOT EXISTS sub_category_check
     BEFORE INSERT
     ON race_subscriptions
     FOR EACH ROW
 BEGIN
+    UPDATE trigger_log
+    SET counter = counter + 1
+    WHERE name = 'sub_category_check';
     SELECT RAISE(ABORT, 'The category of the referenced athlete should match the category of the race')
     WHERE (SELECT category_id
-           FROM new
-                    JOIN athletes a ON new.athlete_id = a.id) !=
+           FROM athletes a
+           WHERE new.athlete_id = a.id) !=
           (SELECT category_id
-           FROM new
-                    JOIN races r ON new.race_id = r.id);
+           FROM races r
+           WHERE new.race_id = r.id);
 END;
 
 CREATE TRIGGER IF NOT EXISTS relay_category_check
@@ -228,12 +254,14 @@ CREATE TRIGGER IF NOT EXISTS relay_category_check
           FROM relay_team_athletes
           WHERE relay_team_id = new.relay_team_id) > 0
 BEGIN
-    SELECT RAISE(ABORT,
-                 'The category code of the referenced athlete should match the category code of the other athletes in the relay team')
+    UPDATE trigger_log
+    SET counter = counter + 1
+    WHERE name = 'relay_category_check';
+    SELECT RAISE(ABORT, 'The category code of the referenced athlete should match the category code of the other athletes in the relay team')
     WHERE (SELECT c.code
-           FROM new
-                    JOIN athletes a ON new.athlete_id = a.id
-                    JOIN categories c on c.id = a.category_id) !=
+           FROM athletes a
+                    JOIN categories c on c.id = a.category_id
+           WHERE a.id = new.athlete_id) !=
           (SELECT c.code
            FROM relay_team_athletes rta
                     JOIN athletes a ON rta.athlete_id = a.id
@@ -242,7 +270,7 @@ BEGIN
            LIMIT 1);
 END;
 
-CREATE TRIGGER IF NOT EXISTS relay_category_check
+CREATE TRIGGER IF NOT EXISTS relay_club_check
     BEFORE INSERT
     ON relay_team_athletes
     FOR EACH ROW
@@ -253,25 +281,29 @@ BEGIN
     SELECT RAISE(ABORT,
                  'The club of the referenced athlete should match the club of other athletes in the relay team')
     WHERE (SELECT c.id
-           FROM new
-                    JOIN athletes a ON new.athlete_id = a.id
-                    JOIN clubs c on c.id = a.club_id) !=
+           FROM athletes a
+                    JOIN clubs c on c.id = a.club_id
+           WHERE new.athlete_id = a.id) !=
           (SELECT c.id
            FROM relay_team_athletes rta
                     JOIN athletes a ON rta.athlete_id = a.id
                     JOIN clubs c on c.id = a.club_id
            WHERE rta.relay_team_id = new.relay_team_id
            LIMIT 1);
+    UPDATE trigger_log
+    SET counter = counter + 1
+    WHERE name = 'relay_club_check';
 END;
 
--- check that the athlete_id has a team_id  relay_team_athletes associated
--- with the subscription
 CREATE TRIGGER IF NOT EXISTS relay_sub_times_athlete_team_check
     BEFORE INSERT
     ON relay_sub_times
     FOR EACH ROW
 BEGIN
-    SELECT RAISE(ABORT, 'The athlete_id should be in the relay_team_athletes associated with the relay subscription')
+    UPDATE trigger_log
+    SET counter = counter + 1
+    WHERE name = 'relay_sub_times_athlete_team_check';
+    SELECT RAISE(ABORT, 'The referenced athlete should be in the relay team associated with the referenced relay subscription')
     WHERE (SELECT COUNT(*)
            FROM relay_team_athletes rta
                     JOIN relay_subscriptions rs ON rs.relay_team_id = rta.relay_team_id
