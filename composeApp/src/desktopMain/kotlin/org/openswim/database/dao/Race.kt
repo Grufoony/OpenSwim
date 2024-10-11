@@ -21,6 +21,7 @@ class Race(id: EntityID<Int>) : IntEntity(id) {
     var category by Category referencedOn Races.categoryId
     var competition by Competition referencedOn Races.competitionId
     val subscriptions by RaceSubscription referrersOn RaceSubscriptions.raceId
+    val series by Serie referrersOn Series.raceId
 
 }
 
