@@ -20,3 +20,6 @@ captures
 # DBMAIN lock file
 *lock*.lun*
 
+*sqlite
+*sqlite-wal
+*sqlite-shm
