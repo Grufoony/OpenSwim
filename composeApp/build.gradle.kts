@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.exposed.jdbc)
             implementation(libs.exposed.javatime)
             implementation(libs.exposed.dao)
+            implementation(libs.xerial.sqlite)
         }
     }
 }
