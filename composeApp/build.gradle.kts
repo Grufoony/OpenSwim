@@ -25,6 +25,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.kotlinx.datetime)
             // Serial Communication - jSerialComm
             implementation(libs.jSerialComm)
             // Database - Exposed
@@ -33,6 +34,10 @@ kotlin {
             implementation(libs.exposed.javatime)
             implementation(libs.exposed.dao)
             implementation(libs.xerial.sqlite)
+
+            // Logger
+            implementation(libs.klogging)
+            implementation(libs.logback)
         }
     }
 }
@@ -45,7 +50,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "OpenSwim"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.1"
             licenseFile.set(project.file("../LICENSE"))
         }
     }

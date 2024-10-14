@@ -23,3 +23,5 @@ captures
 *sqlite
 *sqlite-wal
 *sqlite-shm
+
+*.log
