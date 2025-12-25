@@ -29,7 +29,6 @@ fun App() {
         var ports by remember { mutableStateOf(emptyArray<SerialPort>()) }
         var selectedPort by remember { mutableStateOf<SerialPort?>(null) }
         var response by remember { mutableStateOf<String?>(null) }
-        val baudRates = listOf(9600, 14400, 19200, 38400, 57600, 115200)
         var selectedBaudRate by remember { mutableStateOf<Int>(19200) }
         var selectedChrono by remember { mutableStateOf<ChronoDefs>(Master3())}
         var showMasterMenu by remember { mutableStateOf(false) }

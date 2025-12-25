@@ -9,11 +9,13 @@ private val LoggerSingleton = KotlinLogging.logger{}
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "OpenSwim",
+        title = "OpenSwim"
     ) {
-        LoggerSingleton.info{"Before app"}
-        App()
-        LoggerSingleton.info{"After app"}
-        LoggerSingleton.debug{"Debug test"}
+        ChronoSetupWindow(
+            onConfirm = { baudRate, chronoType, port ->
+                // Handle confirmed baud rate and chrono type here
+                println("Baud Rate: $baudRate, Chrono Type: ${chronoType.name}")
+            }
+        )
     }
 }
