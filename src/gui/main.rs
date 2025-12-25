@@ -1,5 +1,6 @@
 use iced::{Task, Element, Theme, Length};
 use iced::widget::{button, column, container, row, text};
+use crate::database::CsvImporter;
 
 pub fn run() -> iced::Result {
     iced::application(OpenSwimApp::new, OpenSwimApp::update, OpenSwimApp::view)
@@ -27,6 +28,7 @@ enum Message {
     FilePressed,
     ImportDB,
     ImportCSV,
+    FileSelected(Option<std::path::PathBuf>),
     CloseFileMenu,
     InfoPressed,
     CloseInfo,
@@ -41,7 +43,7 @@ impl OpenSwimApp {
 
     fn update(&mut self, message: Message) -> Task<Message> {
         match message {
-            /// Handle File button actions
+            // Handle File button actions
             Message::FilePressed => {
                 self.show_file_menu = !self.show_file_menu;
                 Task::none()
@@ -52,15 +54,41 @@ impl OpenSwimApp {
                 Task::none()
             }
             Message::ImportCSV => {
-                println!("Import CSV selected");
                 self.show_file_menu = false;
+                Task::perform(
+                    async {
+                        rfd::AsyncFileDialog::new()
+                            .add_filter("CSV files", &["csv"])
+                            .set_title("Select CSV file to import")
+                            .pick_file()
+                            .await
+                            .map(|handle| handle.path().to_path_buf())
+                    },
+                    Message::FileSelected,
+                )
+            }
+            Message::FileSelected(path) => {
+                if let Some(file_path) = path {
+                    println!("Selected file: {:?}", file_path);
+                    let importer = CsvImporter::new();
+                    match importer.import_csv(&file_path) {
+                        Ok(count) => {
+                            println!("Successfully imported {} records from CSV", count);
+                        }
+                        Err(e) => {
+                            eprintln!("Error importing CSV: {}", e);
+                        }
+                    }
+                } else {
+                    println!("No file selected");
+                }
                 Task::none()
             }
             Message::CloseFileMenu => {
                 self.show_file_menu = false;
                 Task::none()
             }
-            /// Handle Info button actions
+            // Handle Info button actions
             Message::InfoPressed => {
                 self.show_info = true;
                 Task::none()

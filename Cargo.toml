@@ -7,4 +7,5 @@ authors = ["Grufoony <your.email@example.com>"]
 [dependencies]
 csv = "1.4.0"
 iced = "0.14.0"
+rfd = { version = "0.16.0", features = ["async-std"] }
 sqlx = "0.8.6"
