@@ -1,27 +1,16 @@
-*.iml
-.kotlin
-.gradle
-**/build/
-xcuserdata
-!src/**/build/
-local.properties
-.idea
-.DS_Store
-captures
-.externalNativeBuild
-.cxx
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
 
-# DBMAIN lock file
-*lock*.lun*
+# Virtual environments
+.venv
 
-*sqlite
-*sqlite-wal
-*sqlite-shm
+# PyInstaller files
+*.spec
 
-*.log
+# OpenSwim files
+*.osw
